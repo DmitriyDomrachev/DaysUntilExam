@@ -10,7 +10,7 @@ public class SPHelper {
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
 
-    public static final String COMMUNITY_DATE = "commDate", TAG = "SPHelperTAG";
+    public static final String DATA_VERISON = "dataVersion", CREATED_DB = "createdDB", TAG = "SPHelperTAG";
 
     public SPHelper(Context context) {
         this.sharedPref = PreferenceManager.getDefaultSharedPreferences(context);

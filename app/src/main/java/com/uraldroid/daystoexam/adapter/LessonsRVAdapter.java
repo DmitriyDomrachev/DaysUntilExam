@@ -2,22 +2,19 @@ package com.uraldroid.daystoexam.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.uraldroid.daystoexam.R;
 import com.uraldroid.daystoexam.activity.LessonActivity;
-import com.uraldroid.daystoexam.data.Lesson;
+import com.uraldroid.daystoexam.model.Lesson;
 
 import java.util.ArrayList;
 
@@ -56,6 +53,13 @@ public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.Cont
         return lessons.size();
     }
 
+    public void updateData(ArrayList<Lesson> newData){
+        lessons.clear();
+        lessons.addAll(newData);
+        notifyDataSetChanged();
+
+    }
+
     //инциализации всех View-элементов
     class ContactsViewHolder extends RecyclerView.ViewHolder {
 
@@ -87,7 +91,10 @@ public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.Cont
 
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, LessonActivity.class);
+                intent.putExtra("id", lesson.getId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
 
             public void setRecord(Lesson lesson) {
