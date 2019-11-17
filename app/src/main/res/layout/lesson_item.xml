@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lesson_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp">
+
+
+    <ImageView
+        android:id="@+id/item_icon_image_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:id="@+id/item_text_block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_icon_image_view"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_lesson_name"
+            style="@style/SubheadText"
+            android:text="Русския язык" />
+
+        <TextView
+            android:id="@+id/item_lesson_data"
+            android:text="До экзамена осталось: 124 дней \nДата проведения 18.01.3141"
+            style="@style/BodyText" />
+    </LinearLayout>
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/item_fav_btn"-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="19dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:background="@drawable/ic_star_border_black_24dp" />-->
+
+</RelativeLayout>
