@@ -2,9 +2,11 @@ package com.uraldroid.daystoexam.model;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.uraldroid.daystoexam.R;
@@ -12,6 +14,7 @@ import com.uraldroid.daystoexam.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -19,6 +22,8 @@ import java.util.GregorianCalendar;
 public class Lesson {
     @PrimaryKey
     int id;
+
+    int favorite;
 
     String earlyDate, mainDate, lateDate, description, name;
 
@@ -31,8 +36,27 @@ public class Lesson {
         this.name = name;
     }
 
+    public Lesson(int id, int favorite, String earlyDate, String mainDate, String lateDate, String description, String name) {
+        this.id = id;
+        this.favorite = favorite;
+        this.earlyDate = earlyDate;
+        this.mainDate = mainDate;
+        this.lateDate = lateDate;
+        this.description = description;
+        this.name = name;
+    }
+
     public Lesson() {
     }
+
+    public int getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(int favorite) {
+        this.favorite = favorite;
+    }
+
 
     public int getId() {
         return id;
@@ -86,18 +110,18 @@ public class Lesson {
         Calendar cal1 = new GregorianCalendar();
         Calendar cal2 = Calendar.getInstance();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
         Date date;
         try {
-            date = sdf.parse(getMainDate());
+            date = sdf.parse("10:00 " + getMainDate());
             cal1.setTime(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
-        return String.valueOf((int) ((cal1.getTime().getTime() - cal2.getTime().getTime()) / (1000 * 60 * 60 * 24)) );
+        return String.valueOf((int) ((cal1.getTime().getTime() - cal2.getTime().getTime()) / (1000 * 60 * 60 * 24)));
     }
 
     public Drawable getIcon(Context context) {
@@ -131,7 +155,19 @@ public class Lesson {
         return ContextCompat.getDrawable(context, R.drawable.ic_launcher_foreground);
     }
 
-    public String getDates(){
+    public Drawable getStarIcon(Context context) {
+        if (favorite == 0) {
+            Log.d("mainTag", "пустая зведза");
+            return ContextCompat.getDrawable(context, R.drawable.ic_star_border_black_24dp);
+        }
+        else {
+            Log.d("mainTag", "непустая зведза");
+
+            return ContextCompat.getDrawable(context, R.drawable.ic_star_black_24dp);
+        }
+    }
+
+    public String getDates() {
         return "Досрочный день сдачи: " + getEarlyDate() +
                 "\nОсновной день сдачи: " + getMainDate() +
                 "\nРезервный день сдачи: " + getLateDate();
@@ -153,21 +189,29 @@ public class Lesson {
         Calendar cal1 = new GregorianCalendar();
         Calendar cal2 = Calendar.getInstance();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
         Date date;
         try {
-            date = sdf.parse(getMainDate());
+            date = sdf.parse("10:00 " + getMainDate());
             cal1.setTime(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         long millis = cal1.getTime().getTime() - cal2.getTime().getTime();
-        int days = (int)(millis / (1000 * 60 * 60 * 24));
-        int hours = (int)(millis % (1000*60*60*24) / (1000*60*60));
+        int days = (int) (millis / (1000 * 60 * 60 * 24));
+        int hours = (int) (millis % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+        int min = (int) (millis % (1000 * 60 * 60) / (1000 * 60));
 
-
-        return days + " дней\n" + hours + " часов";
+        return days + " дней\n" + hours + " часов\n" + min + " минут";
     }
+
+    public static final Comparator<Lesson> myComparator = new Comparator<Lesson>() {
+        @Override
+        public int compare(Lesson o1, Lesson o2) {
+            return o2.getFavorite()-o1.getFavorite();
+        }
+
+    };
 }

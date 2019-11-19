@@ -34,11 +34,10 @@
             android:text="Информатика" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/lessonStarImageView"
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:visibility="gone"
             app:srcCompat="@drawable/ic_star_border_black_24dp" />
 
 

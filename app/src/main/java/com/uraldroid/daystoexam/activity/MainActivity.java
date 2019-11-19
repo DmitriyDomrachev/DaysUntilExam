@@ -21,6 +21,8 @@ import com.uraldroid.daystoexam.data.SPHelper;
 import com.uraldroid.daystoexam.model.Lesson;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import static com.uraldroid.daystoexam.data.SPHelper.CREATED_DB;
 import static com.uraldroid.daystoexam.data.SPHelper.DATA_VERISON;
@@ -52,10 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
         rv.setAdapter(adapter);
 
-
     }
 
-    private void checkDataVersion(){
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.updateData();
+    }
+
+    private void checkDataVersion() {
         Log.d(TAG, "Проверка актуальности данных");
         DatabaseReference reference = database.getReference("version");
         reference.addValueEventListener(new ValueEventListener() {
@@ -64,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 Long value = dataSnapshot.getValue(Long.class);
                 Log.d(TAG, "Версия таблицы: " + value);
 
-                if (spHelper.loadValue(DATA_VERISON, 0L) < value){
+                if (spHelper.loadValue(DATA_VERISON, 0L) < value) {
                     updateData();
                     spHelper.saveValue(DATA_VERISON, value);
                 }
@@ -80,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void updateData(){
+    private void updateData() {
         Log.d(TAG, "Загрузка расписания из Database");
         lessons.clear();
         DatabaseReference reference = database.getReference("Lessons");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Lesson lesson = snapshot.getValue(Lesson.class);
                     lessons.add(lesson);
                     Log.d(TAG, "Загружен урок: " + lesson.getName());
@@ -97,17 +104,21 @@ public class MainActivity extends AppCompatActivity {
 
                 if (spHelper.loadValue(CREATED_DB, 0) == 0) {
                     Log.d(TAG, "Сохранение уроков");
-                    for (Lesson i: lessons) {
+                    for (Lesson i : lessons) {
+                        i.setFavorite(0);
                         App.getInstance().getDatabase().lessonDao().insert(i);
                     }
                     spHelper.saveValue(CREATED_DB, 1);
                 } else {
+
                     Log.d(TAG, "Обновление уроков");
-                    for (Lesson i: lessons) {
+                    for (Lesson i : lessons) {
+                        i.setFavorite(App.getInstance().getDatabase().lessonDao().getById(i.getId()).getFavorite());
                         App.getInstance().getDatabase().lessonDao().update(i);
                     }
                 }
                 lessons = new ArrayList<>(App.getInstance().getDatabase().lessonDao().getAll());
+                Collections.sort(lessons, Lesson.myComparator);
                 adapter.updateData(lessons);
             }
 

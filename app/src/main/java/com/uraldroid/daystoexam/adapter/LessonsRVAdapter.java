@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.uraldroid.daystoexam.App;
 import com.uraldroid.daystoexam.R;
 import com.uraldroid.daystoexam.activity.LessonActivity;
 import com.uraldroid.daystoexam.model.Lesson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.ContactsViewHolder> {
 
@@ -42,9 +44,11 @@ public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.Cont
         final Lesson lesson = lessons.get(position);
         Log.d(TAG, "onBind: " + lesson.getName());
         holder.txtName.setText(String.valueOf(lesson.getName()));
-        holder.txtData.setText("Дней до экзамена: " + lesson.getDays() +"\nДата проведения: " + lesson.getMainDate());
+        holder.txtData.setText("Дней до экзамена: " + lesson.getDays() + "\nДата проведения: " + lesson.getMainDate());
         holder.iconImage.setImageDrawable(lesson.getIcon(context));
+        holder.starIcon.setImageDrawable(lesson.getStarIcon(context));
         holder.cvListener.setRecord(lesson);
+        holder.scListener.setRecord(lesson, holder.starIcon);
 
     }
 
@@ -53,9 +57,17 @@ public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.Cont
         return lessons.size();
     }
 
-    public void updateData(ArrayList<Lesson> newData){
+    public void updateData(ArrayList<Lesson> newData) {
         lessons.clear();
         lessons.addAll(newData);
+        notifyDataSetChanged();
+
+    }
+
+    public void updateData() {
+        lessons.clear();
+        lessons.addAll(App.getInstance().getDatabase().lessonDao().getAll());
+        Collections.sort(lessons, Lesson.myComparator);
         notifyDataSetChanged();
 
     }
@@ -66,11 +78,13 @@ public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.Cont
         TextView txtName;
         TextView txtData;
         ImageView iconImage;
+        ImageView starIcon;
         RelativeLayout rl;
 
 
         //Инициализируем слушатели
         CardClickListener cvListener = new CardClickListener();
+        StarClickListener scListener = new StarClickListener();
 
 
         ContactsViewHolder(View itemView) {
@@ -79,9 +93,11 @@ public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.Cont
             txtName = itemView.findViewById(R.id.item_lesson_name);
             txtData = itemView.findViewById(R.id.item_lesson_data);
             iconImage = itemView.findViewById(R.id.item_icon_image_view);
+            starIcon = itemView.findViewById(R.id.item_fav_btn);
             rl = itemView.findViewById(R.id.lesson_item);
 
             rl.setOnClickListener(cvListener);
+            starIcon.setOnClickListener(scListener);
 
 
         }
@@ -97,11 +113,32 @@ public class LessonsRVAdapter extends RecyclerView.Adapter<LessonsRVAdapter.Cont
                 context.startActivity(intent);
             }
 
-            public void setRecord(Lesson lesson) {
+            void setRecord(Lesson lesson) {
                 this.lesson = lesson;
             }
         }
+
+        class StarClickListener implements View.OnClickListener {
+            Lesson lesson;
+            ImageView imageView;
+
+            @Override
+            public void onClick(View v) {
+                if (lesson.getFavorite() == 0) {
+                    lesson.setFavorite(1);
+                } else {
+                    lesson.setFavorite(0);
+                }
+                App.getInstance().getDatabase().lessonDao().update(lesson);
+                imageView.setImageDrawable(lesson.getStarIcon(context));
+                updateData();
+
+            }
+
+            void setRecord(Lesson lesson, ImageView imageView) {
+                this.lesson = lesson;
+                this.imageView = imageView;
+            }
+        }
     }
-
-
 }
