@@ -21,8 +21,16 @@
 
         <TextView
             style="@style/ToolbarText"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
             android:text="Сколько дней до ЕГЭ?" />
+
+        <ImageView
+            android:id="@+id/settingImageView"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_settings_black_24dp" />
 
     </LinearLayout>
 

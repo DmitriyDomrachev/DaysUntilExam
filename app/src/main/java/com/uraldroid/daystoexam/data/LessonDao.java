@@ -16,8 +16,12 @@ public interface LessonDao {
     @Query("SELECT * FROM lesson")
     List<Lesson> getAll();
 
+    @Query("SELECT * FROM lesson WHERE favorite = 1")
+    List<Lesson> getFavorite();
+
     @Query("SELECT * FROM lesson WHERE id = :id")
     Lesson getById(long id);
+
 
     @Insert
     void insert(Lesson lesson);

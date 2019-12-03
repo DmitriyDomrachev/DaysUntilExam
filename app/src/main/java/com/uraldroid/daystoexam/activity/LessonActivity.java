@@ -2,6 +2,8 @@ package com.uraldroid.daystoexam.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -68,5 +70,8 @@ public class LessonActivity extends AppCompatActivity {
                 starBtn.setImageDrawable(lesson.getStarIcon(getApplicationContext()));
             }
         });
+
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
 }
