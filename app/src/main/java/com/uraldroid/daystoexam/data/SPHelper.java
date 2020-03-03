@@ -13,7 +13,7 @@ public class SPHelper {
     public static final String DATA_VERISON = "dataVersion", SET_ALARM = "setAlarm",
             CREATED_DB = "createdDB", HOUR_NOTIFICATION = "hourNotif",
             MINUTE_NOTIFICATION = "minNotif", NOTIF_ENABLED = "notifEnabl", TAG = "SPHelperTAG",
-    UPDATE_5 = "5update";
+    UPDATE_5 = "5update", UPDATE_6 = "6update";
 
     public SPHelper(Context context) {
         this.sharedPref = PreferenceManager.getDefaultSharedPreferences(context);

@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.uraldroid.daystoexam.App;
 import com.uraldroid.daystoexam.R;
 import com.uraldroid.daystoexam.model.Lesson;
@@ -19,6 +21,7 @@ public class LessonActivity extends AppCompatActivity {
     TextView nameTV, datesTV, timesTV, descTV;
     ImageView backBtn, starBtn;
     Lesson lesson;
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,10 @@ public class LessonActivity extends AppCompatActivity {
         descTV = findViewById(R.id.lessonActDescTV);
         backBtn = findViewById(R.id.lessonActBackImageView);
         starBtn = findViewById(R.id.lessonStarImageView);
+
+        adView = findViewById(R.id.adViewMain);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
 
 

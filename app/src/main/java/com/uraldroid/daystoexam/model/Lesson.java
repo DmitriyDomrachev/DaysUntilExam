@@ -8,8 +8,11 @@ import androidx.core.content.ContextCompat;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.util.StringUtil;
 
 import com.uraldroid.daystoexam.R;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -100,6 +103,10 @@ public class Lesson {
 
     public String getName() {
         return name;
+    }
+
+    public String getCutName() {
+        return StringUtils.abbreviate(name,10);
     }
 
     public void setName(String name) {

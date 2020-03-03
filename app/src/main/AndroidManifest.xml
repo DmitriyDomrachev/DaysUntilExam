@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.uraldroid.daystoexam">
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:name=".App"
@@ -11,7 +14,141 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SettingActivity"></activity>
+
+        <receiver android:name=".widget.RusWidget" android:label="Русский язык">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.BioWidget" android:label="Биология">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.GeoWidget" android:label="География">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.EngWidget" android:label="Иностранный язык">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.InformWidget" android:label="Информатика">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.HistorWidget" android:label="История">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.LiterWidget" android:label="Литература">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.MatWidget" android:label="Математика">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.SoicWidget" android:label="Обществознание">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.RusWidget" android:label="Русский язык">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.PhisWidget" android:label="Физика">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+
+        <receiver android:name=".widget.ChemWidget" android:label="Химия">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rus_widget_info" />
+        </receiver>
+
+
+
+
+
+
+
+
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3330723388651797~8351806501" />
+
+        <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.LessonActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
@@ -24,11 +161,11 @@
         <receiver
             android:name=".service.NotificationReceiver"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
 
         <service
             android:name=".service.NotificationService"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

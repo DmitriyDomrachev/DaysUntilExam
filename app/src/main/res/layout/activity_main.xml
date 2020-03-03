@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,12 +10,14 @@
     tools:context=".activity.MainActivity">
 
     <LinearLayout
+        android:id="@+id/main_tb"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:elevation="6dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:background="@android:color/background_light">
 
@@ -34,12 +36,24 @@
 
     </LinearLayout>
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adViewMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3330723388651797/3099479822">
+    </com.google.android.gms.ads.AdView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_rv_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/main_tb"
+        android:layout_above="@id/adViewMain"
         android:elevation="0dp" />
 
 
-
-</LinearLayout>
+</RelativeLayout>

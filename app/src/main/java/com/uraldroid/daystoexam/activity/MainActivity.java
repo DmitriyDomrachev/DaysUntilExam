@@ -17,6 +17,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,21 +42,35 @@ import java.util.Collections;
 import static com.uraldroid.daystoexam.data.SPHelper.CREATED_DB;
 import static com.uraldroid.daystoexam.data.SPHelper.DATA_VERISON;
 import static com.uraldroid.daystoexam.data.SPHelper.UPDATE_5;
+import static com.uraldroid.daystoexam.data.SPHelper.UPDATE_6;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Lesson> lessons = new ArrayList<>();
     RecyclerView rv;
-    LessonsRVAdapter adapter;
+    LessonsRVAdapter  adapter;
     ImageView settingBtn;
     final String TAG = "mainTag";
 
     FirebaseDatabase database;
     SPHelper spHelper;
-
+    AdView adView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                Log.d(TAG, "Реклмака пошла");
+            }
+        });
+
+        adView = findViewById(R.id.adViewMain);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+
 
         settingBtn = findViewById(R.id.settingImageView);
 
@@ -97,6 +117,16 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
             spHelper.saveValue(UPDATE_5, false);
+        } if (spHelper.loadValue(UPDATE_6, true) && !spHelper.loadValue(UPDATE_5, true)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+            builder.setTitle("Что нового?")
+                    .setMessage("- Добавлены виджеты. Теперь вы можете узнать, сколько дней до ЕГЭ, не открывая приложение!")
+                    .setPositiveButton("Ок", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            spHelper.saveValue(UPDATE_6, false);
         }
     }
 
@@ -145,7 +175,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onStop() {
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+        super.onStop();
+    }
 
     private void updateData() {
         Log.d(TAG, "Загрузка расписания из Database");

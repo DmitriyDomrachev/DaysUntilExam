@@ -45,10 +45,10 @@ public class NotificationService extends IntentService {
     public void onCreate() {
         createNotificationChannel();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_arrow_back_black_24dp)
-                .setContentTitle(notifTitle)
+                .setSmallIcon(R.drawable.ic_timer_notification)
+                .setContentTitle("Проверка...")
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(notifText))
+                        .bigText("Считаем дни до экзаменов."))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         startForeground(1, builder.build());
